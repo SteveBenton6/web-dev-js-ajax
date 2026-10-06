@@ -24,9 +24,14 @@ async function fetchCommentsForPost() {
   const response = await fetch(`/posts/${postId}/comments`);
   const responseData = await response.json();
 
-  const commentsListElement = createCommentsList(responseData);
-  commentsSectionElement.innerHTML = "";
-  commentsSectionElement.appendChild(commentsListElement);
+  if (responseData && responseData.length > 0) {
+    const commentsListElement = createCommentsList(responseData);
+    commentsSectionElement.innerHTML = "";
+    commentsSectionElement.appendChild(commentsListElement);
+  } else {
+    commentsSectionElement.firstElementChild.textContent = `
+    We could not find any comments. Maybe add one?`;
+  }
 }
 
 async function saveComment(event) {
